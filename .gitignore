@@ -1,0 +1,23 @@
+.classpath
+.project
+.settings/
+target/
+logs/
+
+*/.classpath
+*/.project
+*/.settings/
+*/target/
+*/logs/
+ # Environment variables
+.env
+.env.*
+
+# Log files
+*.log
+
+# Local project reference
+project-structure.txt      
+        
+       
+       
