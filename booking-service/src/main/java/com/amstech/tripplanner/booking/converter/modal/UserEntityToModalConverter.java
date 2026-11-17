@@ -1,0 +1,77 @@
+package com.amstech.tripplanner.booking.converter.modal;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.amstech.tripplanner.booking.entity.User;
+import com.amstech.tripplanner.booking.entity.UserRole;
+import com.amstech.tripplanner.booking.modal.response.RoleResponseModal;
+import com.amstech.tripplanner.booking.modal.response.UserResponseModal;
+
+@Component
+public class UserEntityToModalConverter {
+	
+	private String extractFileNameOnly(String fullPath) {
+	    return new File(fullPath).getName();
+	}
+	
+	public UserResponseModal findById(User user) {
+
+		UserResponseModal userResponseModal = new UserResponseModal();
+		userResponseModal.setId(user.getId());
+		userResponseModal.setName(user.getName());
+		userResponseModal.setDob(user.getDob());
+		userResponseModal.setEmail(user.getEmail());
+		userResponseModal.setGender(user.getGender());
+		userResponseModal.setPhoneNumber(user.getPhoneNumber());
+		userResponseModal.setIsDeleted(user.getIsDeleted());
+		userResponseModal.setProfileImage(extractFileNameOnly(user.getProfileImage()));
+		userResponseModal.setLocationId(user.getLocation().getId());
+		userResponseModal.setLocationName(user.getLocation().getName());
+		userResponseModal.setCityId(user.getLocation().getCity().getId());
+		userResponseModal.setCityName(user.getLocation().getCity().getName());
+		userResponseModal.setSateId(user.getLocation().getCity().getState().getId());
+		userResponseModal.setStateName(user.getLocation().getCity().getState().getName());
+		
+		
+		List<RoleResponseModal> roleResponseModals = new ArrayList<>();
+		for (UserRole userRole : user.getUserRoles()) {
+			RoleResponseModal roleResponseModal = new RoleResponseModal();
+			roleResponseModal.setId(userRole.getRole().getId());
+			roleResponseModal.setName(userRole.getRole().getName());
+			roleResponseModals.add(roleResponseModal);
+		}
+		userResponseModal.setRoles(roleResponseModals);
+		
+		return userResponseModal;
+	}
+
+	public List<UserResponseModal> findAll(List<User> users) {
+		
+		List<UserResponseModal> userResponseModals = new ArrayList<>();
+		for (User user : users) {
+			UserResponseModal userResponseModal = new UserResponseModal();
+			userResponseModal.setId(user.getId());
+			userResponseModal.setName(user.getName());
+			userResponseModal.setDob(user.getDob());
+			userResponseModal.setEmail(user.getEmail());
+			userResponseModal.setGender(user.getGender());
+			userResponseModal.setPhoneNumber(user.getPhoneNumber());
+			userResponseModal.setIsDeleted(user.getIsDeleted());
+			userResponseModal.setProfileImage(user.getProfileImage());
+			List<RoleResponseModal> roleResponseModals = new ArrayList<>();
+			for (UserRole userRole : user.getUserRoles()) {
+				RoleResponseModal roleResponseModal = new RoleResponseModal();
+				roleResponseModal.setId(userRole.getRole().getId());
+				roleResponseModal.setName(userRole.getRole().getName());
+				roleResponseModals.add(roleResponseModal);
+			}
+			userResponseModal.setRoles(roleResponseModals);
+			userResponseModals.add(userResponseModal);
+		}
+		return userResponseModals;
+	}
+}
